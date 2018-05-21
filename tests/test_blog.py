@@ -91,3 +91,32 @@ def test_delete(client, auth, app):
         db = get_db()
         post = db.execute('SELECT * FROM post WHERE id = 1').fetchone()
         assert post is None
+
+
+def test_like(client, auth, app):
+    auth.login()
+
+    with app.app_context():
+        db = get_db()
+
+        current_rating = db.execute('SELECT rating FROM post WHERE id = 1').fetchone()['rating']
+
+        response = client.post('/1/like')
+        assert response.headers['Location'] == 'http://localhost/'
+
+        new_rating = db.execute('SELECT rating FROM post WHERE id = 1').fetchone()['rating']
+        assert current_rating + 1 == new_rating
+
+def test_dislike(client, auth, app):
+    auth.login()
+
+    with app.app_context():
+        db = get_db()
+
+        current_rating = db.execute('SELECT rating FROM post WHERE id = 1').fetchone()['rating']
+
+        response = client.post('/1/dislike')
+        assert response.headers['Location'] == 'http://localhost/'
+
+        new_rating = db.execute('SELECT rating FROM post WHERE id = 1').fetchone()['rating']
+        assert current_rating - 1 == new_rating

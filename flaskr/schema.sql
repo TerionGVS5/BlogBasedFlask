@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS post;
+drop table IF EXISTS user_marks;
 
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -13,5 +14,15 @@ CREATE TABLE post (
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   title TEXT NOT NULL,
   body TEXT NOT NULL,
+  rating INTEGER NOT NULL DEFAULT 0,
   FOREIGN KEY (author_id) REFERENCES user (id)
+);
+
+CREATE TABLE user_marks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id_post INTEGER NOT NULL,
+  id_user INTEGER NOT NULL,
+  mark INTEGER NOT NULL,
+  FOREIGN KEY (id_post) REFERENCES post (id),
+  FOREIGN KEY (id_user) references user (id)
 );

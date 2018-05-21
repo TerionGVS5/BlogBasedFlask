@@ -20,6 +20,17 @@
                 {% endif %}
             </header>
             <p class="body">{{ post['body'] }}</p>
+            <footer>
+                <div>
+                    <form action="{{ url_for('blog.like', id=post['id']) }}" method="post">
+                        <input type="submit" value="Like">
+                    </form>
+                    <form action="{{ url_for('blog.dislike', id=post['id']) }}" method="post">
+                        <input type="submit" value="Dislike">
+                    </form>
+                    <h2>Rating: {{ post['rating'] }}</h2>
+                </div>
+            </footer>
         </article>
         {% if not loop.last %}
             <hr>
